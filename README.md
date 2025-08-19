@@ -126,6 +126,37 @@ pip install requests
 
 `max_player_records`代表最多为该群聊/用户展示多少在线成员，以避免在线成员列表过长。虽然填写0并不代表无限制，但是你可用填写一个比服务器最大在线人数更大的值。注意不要填得太大了。
 
+在完成了 `data.json` 的配置之后，就可用直接运行本程序了。本程序经测试可在Windows10/11上运行，暂未测试其它平台。你可用通过下面的指令运行：
+
+```bash
+python "Minecraft Status.py"
+```
+
+另外，你也可用通过创建一个bat来便捷地使用该程序。下面是内容：
+
+```
+@echo off
+chcp 65001 >nul
+cd /d "%~dp0%"
+echo Starting Minecraft Status Bot...
+python "Minecraft Status.py"
+if %errorlevel% neq 0 (
+    echo.
+    echo ========================================
+    echo   Program exited abnormally. Please check:
+    echo 1. Python is properly installed
+    echo 2. mcstatus library is installed
+    echo 3. yunhu library is installed
+    echo 4. requests library is installed
+    echo 5. Script filename is correct
+    echo 6. Config filename is correct
+    echo 7. Network connection is working
+    echo ========================================
+    echo.
+)
+pause
+```
+
 ## 致谢
 
 ### 开源库
