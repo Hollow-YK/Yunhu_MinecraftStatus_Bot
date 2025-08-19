@@ -1,0 +1,2 @@
+# Yunhu_MinecraftStatus_Bot
+将Minecraft服务器状态同步至云湖群聊看板的机器人，基于官方Python SDK。
