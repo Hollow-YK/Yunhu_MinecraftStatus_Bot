@@ -37,6 +37,9 @@
 - 将获取的信息同步至云湖指定群聊看板或指定用户看板
 - 获取服务器成员列表，并列出服务器成员进出情况（此功能存在Bug，欢迎提交更改）
 - 支持多群、多用户同步
+### 1.1.0版本更新：
+- 模块化重构，代码结构更清晰
+- 增强错误处理，提高稳定性
 
 ## 使用说明
 
@@ -74,7 +77,7 @@ pip install requests
 
 建议为本程序单独建立一个文件夹，推荐使用不带空格的纯英文路径 ~~（如果不是也能用，但是可能麻烦点）~~ 。
 
-下载 `Minecraft Status.py` ，并在其同目录下创建 `data.json`
+下载所有源代码文件，并在其同目录下创建 `data.json`
 
 填写 `data.json` 的内容，示例如下：
 
@@ -83,7 +86,7 @@ pip install requests
   "YUNHU_TOKEN": "f0100860fa1145van14e11240d000721",
   "servers": [
     {
-      "name": "",
+      "name": "My Server",
       "MC_SERVER_ADDRESS": "example.com:12345",
       "QUERY_SERVER_HOST": "example.com",
       "QUERY_SERVER_PORT": 54321
@@ -129,7 +132,7 @@ pip install requests
 在完成了 `data.json` 的配置之后，就可用直接运行本程序了。本程序经测试可在Windows10/11上运行，暂未测试其它平台。你可用通过下面的指令运行：
 
 ```bash
-python "Minecraft Status.py"
+python main.py
 ```
 
 另外，你也可用通过创建一个bat来便捷地使用该程序。下面是内容：
@@ -139,7 +142,7 @@ python "Minecraft Status.py"
 chcp 65001 >nul
 cd /d "%~dp0%"
 echo Starting Minecraft Status Bot...
-python "Minecraft Status.py"
+python main.py
 if %errorlevel% neq 0 (
     echo.
     echo ========================================
@@ -148,7 +151,7 @@ if %errorlevel% neq 0 (
     echo 2. mcstatus library is installed
     echo 3. yunhu library is installed
     echo 4. requests library is installed
-    echo 5. Script filename is correct
+    echo 5. All script files are present
     echo 6. Config filename is correct
     echo 7. Network connection is working
     echo ========================================
