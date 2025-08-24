@@ -1,10 +1,13 @@
 import time
+import json
 import logging
 from yunhu.openapi import Openapi
 
 class YunhuBoardManager:
-    def __init__(self, yunhu_token):
+    def __init__(self, yunhu_token, log_with_board=False):
         self.openapi = Openapi(yunhu_token)
+        self.log_with_board = log_with_board
+        self.logger = logging.getLogger("MinecraftMonitor")
     
     def sync_status(self, player_count, max_players, latency, version, server_address, 
                    player_list=None, board_config=None, player_changes=None):
@@ -59,25 +62,29 @@ class YunhuBoardManager:
         {player_change_html}
         """
         
+        # 如果启用了HTML日志输出，记录HTML内容
+        if self.log_with_board:
+            self.logger.debug(f"同步到云湖看板的HTML内容:\n{content}")
+        
         expire_time = int(time.time()) + 60
         
         try:
             res = self.openapi.SetBotBoard(board_config["chatId"], board_config["chatType"], "", "html", content, expire_time)
             response_json = res.json()
             if response_json.get('code') == 1:
-                logging.info("成功推送服务器状态到云湖看板")
+                self.logger.info("成功推送服务器状态到云湖看板")
                 return True
             else:
-                logging.error(f"推送失败: {response_json.get('message', '未知错误')}")
+                self.logger.error(f"推送失败: {response_json.get('message', '未知错误')}")
                 return False
         except json.JSONDecodeError:
-            logging.error("无法解析云湖API返回的JSON格式")
+            self.logger.error("无法解析云湖API返回的JSON格式")
             return False
         except AttributeError:
-            logging.error("响应对象缺少 'json' 方法")
+            self.logger.error("响应对象缺少 'json' 方法")
             return False
         except Exception as e:
-            logging.error(f"发生异常: {e}")
+            self.logger.error(f"发生异常: {e}")
             return False
     
     def sync_offline_status(self, board_config):
@@ -92,23 +99,27 @@ class YunhuBoardManager:
         <p>服务器状态获取失败。</p>
         """
         
+        # 如果启用了HTML日志输出，记录HTML内容
+        if self.log_with_board:
+            self.logger.debug(f"同步到云湖看板的HTML内容:\n{content}")
+        
         expire_time = int(time.time()) + 60
         
         try:
             res = self.openapi.SetBotBoard(board_config["chatId"], board_config["chatType"], "", "html", content, expire_time)
             response_json = res.json()
             if response_json.get('code') == 1:
-                logging.info("成功推送服务器离线状态到云湖看板")
+                self.logger.info("成功推送服务器离线状态到云湖看板")
                 return True
             else:
-                logging.error(f"推送离线状态失败: {response_json.get('message', '未知错误')}")
+                self.logger.error(f"推送离线状态失败: {response_json.get('message', '未知错误')}")
                 return False
         except json.JSONDecodeError:
-            logging.error("无法解析云湖API返回的JSON格式")
+            self.logger.error("无法解析云湖API返回的JSON格式")
             return False
         except AttributeError:
-            logging.error("响应对象缺少 'json' 方法")
+            self.logger.error("响应对象缺少 'json' 方法")
             return False
         except Exception as e:
-            logging.error(f"发生异常: {e}")
+            self.logger.error(f"发生异常: {e}")
             return False

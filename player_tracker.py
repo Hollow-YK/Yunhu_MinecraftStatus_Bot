@@ -1,8 +1,10 @@
 import time
+import logging
 
 class PlayerTracker:
     def __init__(self, config_manager):
         self.config_manager = config_manager
+        self.logger = logging.getLogger("MinecraftMonitor")
     
     def track_changes(self, server_name, current_players):
         """
@@ -24,5 +26,9 @@ class PlayerTracker:
 
         # 保存当前玩家列表
         self.config_manager.save_current_players(server_name, current_players or [])
+        
+        # 记录玩家变化
+        if changes:
+            self.logger.info(f"检测到玩家变化: {len(joined_players)}人加入, {len(left_players)}人离开")
         
         return changes
