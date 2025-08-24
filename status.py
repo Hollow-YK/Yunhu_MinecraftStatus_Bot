@@ -1,9 +1,10 @@
-import logging
 from mcstatus import JavaServer
+import logging
 
 class ServerStatusFetcher:
     def __init__(self, server_config):
         self.server_config = server_config
+        self.logger = logging.getLogger("MinecraftMonitor")
     
     def fetch_status(self):
         """
@@ -27,11 +28,11 @@ class ServerStatusFetcher:
                 query = query_server.query()  # 查询玩家列表
                 player_list = query.players.names  # 玩家名字列表
             except Exception as e:
-                logging.warning(f"无法获取玩家列表: {e}")  # 记录警告信息
+                self.logger.warning(f"无法获取玩家列表: {e}")  # 记录警告信息
                 player_list = None  # 设置为空
             
-            logging.info(f"Fetched server status: {player_count}/{max_players} players online, latency {latency} ms")
+            self.logger.info(f"Fetched server status: {player_count}/{max_players} players online, latency {latency} ms")
             return player_count, max_players, latency, version, player_list
         except Exception as e:
-            logging.error(f"Failed to fetch server status: {e}")
+            self.logger.error(f"Failed to fetch server status: {e}")
             return None, None, None, None, None
